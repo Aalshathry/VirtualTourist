@@ -13,7 +13,9 @@ class API {
     private static var sessionId: String?
     
     static func getImages(_ pin: Pin, completion: @escaping (String?)->Void) {
-        guard let url = URL(string: "\(APIConstants.BASE)?\(APIConstants.ParameterKeys.KEY)=\(APIConstants.API_KEY)&\(APIConstants.ParameterKeys.METHOD)=flickr.photos.search&\(APIConstants.ParameterKeys.FORMAT)=json&\(APIConstants.ParameterKeys.LATITUDE)=\(pin.latitude)&\(APIConstants.ParameterKeys.LONGITUDE)=\(pin.longitude)&\(APIConstants.ParameterKeys.TAGS)=&\(APIConstants.ParameterKeys.PER_PAGE)=18&\(APIConstants.ParameterKeys.ACCURCY)=11&\(APIConstants.ParameterKeys.CALL_BACK)=1") else {
+        let number = Int.random(in: 0 ..< 30)
+        
+        guard let url = URL(string: "\(APIConstants.BASE)?\(APIConstants.ParameterKeys.KEY)=\(APIConstants.API_KEY)&\(APIConstants.ParameterKeys.METHOD)=flickr.photos.search&\(APIConstants.ParameterKeys.FORMAT)=json&\(APIConstants.ParameterKeys.LATITUDE)=\(pin.latitude)&\(APIConstants.ParameterKeys.LONGITUDE)=\(pin.longitude)&\(APIConstants.ParameterKeys.TAGS)=&\(APIConstants.ParameterKeys.PER_PAGE)=\(number)&\(APIConstants.ParameterKeys.ACCURCY)=11&\(APIConstants.ParameterKeys.CALL_BACK)=1") else {
             completion(nil)
             return
         }

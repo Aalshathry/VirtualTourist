@@ -15,6 +15,7 @@ import Kingfisher
 class AlbumViewController: UIViewController, MKMapViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate {
 
 
+    @IBOutlet weak var collectionButton: UIButton!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var mapView: MKMapView!
     
@@ -102,6 +103,8 @@ class AlbumViewController: UIViewController, MKMapViewDelegate, UICollectionView
     }
     
     @IBAction func newCollection(_ sender: Any) {
+        collectionButton.isEnabled = false
+        
         let photos = fetchedResultsController.fetchedObjects
                 
         for photo in photos!{
@@ -111,12 +114,13 @@ class AlbumViewController: UIViewController, MKMapViewDelegate, UICollectionView
         
         fetch()
         loadImages()
+        collectionButton.isEnabled = false
     }
     
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
        
-        return fetchedResultsController.sections?[section].numberOfObjects ?? 0
+        return fetchedResultsController.fetchedObjects?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -136,6 +140,12 @@ class AlbumViewController: UIViewController, MKMapViewDelegate, UICollectionView
         return cell
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        let object = fetchedResultsController.object(at: indexPath)
+        DataController.shared.viewContext.delete(object)
+        try? DataController.shared.viewContext.save()
+    }
     
 }
 

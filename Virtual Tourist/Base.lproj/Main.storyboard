@@ -119,6 +119,7 @@
                         <viewLayoutGuide key="safeArea" id="Ux4-2V-px7"/>
                     </view>
                     <connections>
+                        <outlet property="collectionButton" destination="IuU-fh-KyX" id="oeo-aI-LK4"/>
                         <outlet property="collectionView" destination="b8U-ty-x2j" id="GoV-iP-f0r"/>
                         <outlet property="mapView" destination="Wc0-9a-1V6" id="tfu-iS-fzR"/>
                     </connections>
