@@ -16,12 +16,28 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     var fetchedResultsController: NSFetchedResultsController<Pin>!
     var dataController: DataController!
     
+    var blockOperations: [BlockOperation] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         makePinsByTapping()
         mapView.delegate = self
         
         fetch()
+    }
+    
+    @IBAction func clearPins(_ sender: Any) {
+        
+        let pins = fetchedResultsController.fetchedObjects
+        
+        for pin in pins!{
+            DispatchQueue.main.async {
+                self.mapView.removeAnnotations(self.mapView.annotations)
+            }
+            DataController.shared.viewContext.delete(pin)
+            try? DataController.shared.viewContext.save()
+        }
+        self.mapView.reloadInputViews()
     }
     
     func fetch() {
@@ -37,7 +53,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         try? fetchedResultsController.performFetch()
         
         let pins = fetchedResultsController.fetchedObjects
-        
+
         for pin in pins! {
             loadPins(pin: pin)
         }
@@ -95,7 +111,6 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     }
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-
         let vc = storyboard?.instantiateViewController(withIdentifier: "nextVC") as! AlbumViewController
         
         vc.pin = (view.annotation! as! MyPinAnnotation).pinObject

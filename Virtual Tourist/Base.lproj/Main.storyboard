@@ -21,13 +21,28 @@
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" restorationIdentifier="mapView" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="hzs-2s-dxi">
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                             </mapView>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y96-1T-rmg">
+                                <rect key="frame" x="0.0" y="64" width="375" height="44"/>
+                                <items>
+                                    <navigationItem id="x7f-i5-DZC">
+                                        <barButtonItem key="rightBarButtonItem" title="Clear Pins" id="bMM-tF-zDY">
+                                            <connections>
+                                                <action selector="clearPins:" destination="cvy-sI-OjM" id="KVo-L9-BGT"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="hzs-2s-dxi" secondAttribute="trailing" id="M2P-iU-UVA"/>
                             <constraint firstItem="hzs-2s-dxi" firstAttribute="bottom" secondItem="dE3-tt-kGn" secondAttribute="bottom" id="TpC-pS-sv6"/>
+                            <constraint firstItem="y96-1T-rmg" firstAttribute="trailing" secondItem="hzs-2s-dxi" secondAttribute="trailing" id="ZwY-Gq-r5Z"/>
+                            <constraint firstItem="y96-1T-rmg" firstAttribute="leading" secondItem="hzs-2s-dxi" secondAttribute="leading" id="cb9-h7-ajw"/>
                             <constraint firstItem="hzs-2s-dxi" firstAttribute="top" secondItem="dE3-tt-kGn" secondAttribute="top" id="e6F-JW-Uym"/>
                             <constraint firstItem="hzs-2s-dxi" firstAttribute="leading" secondItem="M9z-YK-rue" secondAttribute="leading" id="ijB-Gv-ATr"/>
+                            <constraint firstItem="y96-1T-rmg" firstAttribute="top" secondItem="hzs-2s-dxi" secondAttribute="top" id="yH1-wi-2Fq"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="dE3-tt-kGn"/>
                     </view>
