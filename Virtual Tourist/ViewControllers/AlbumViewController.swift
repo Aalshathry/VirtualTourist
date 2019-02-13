@@ -95,11 +95,11 @@ class AlbumViewController: UIViewController, MKMapViewDelegate, UICollectionView
         if(isEmpty){
             API.getImages(self.pin!) { err  in
                 guard err == nil else {
+                    let alert = UIAlertController(title: "There was an error", message: err!, preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in }))
+                    self.present(alert, animated: true, completion: nil)
                     return
                 }
-                let alert = UIAlertController(title: "There was an error", message: err!, preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in }))
-                self.present(alert, animated: true, completion: nil)
                 self.dismiss(animated: true, completion: nil)
             }
         }
