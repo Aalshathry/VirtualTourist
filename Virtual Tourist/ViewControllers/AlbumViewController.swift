@@ -97,6 +97,9 @@ class AlbumViewController: UIViewController, MKMapViewDelegate, UICollectionView
                 guard err == nil else {
                     return
                 }
+                let alert = UIAlertController(title: "There was an error", message: err!, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in }))
+                self.present(alert, animated: true, completion: nil)
                 self.dismiss(animated: true, completion: nil)
             }
         }
@@ -128,15 +131,23 @@ class AlbumViewController: UIViewController, MKMapViewDelegate, UICollectionView
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! CollectionViewCell
     
         let photo = fetchedResultsController.object(at: indexPath)
+        if photo.image == nil{
+            let imageUrl = URL(string: (photo.url)!)!
+            let imageData = try! Data(contentsOf: imageUrl)
+            photo.image = imageData
+
+            let image = UIImage(data: imageData)
+            
+            cell.ImageProduct.image = image
+            cell.ImageProduct.kf.indicatorType = .activity
+            cell.ImageProduct.kf.setImage(with: imageUrl, options: [.transition(.fade(0.5))])
+        }
+        else{
+            let image = UIImage(data: photo.image!)
+            
+            cell.ImageProduct.image = image
+        }
         
-        let imageUrl = URL(string: (photo.url)!)!
-        let imageData = try! Data(contentsOf: imageUrl)
-        let image = UIImage(data: imageData)
-
-        cell.ImageProduct.image = image
-        cell.ImageProduct.kf.indicatorType = .activity
-        cell.ImageProduct.kf.setImage(with: imageUrl, options: [.transition(.fade(0.5))])
-
         return cell
     }
     

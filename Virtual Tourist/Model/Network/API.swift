@@ -25,47 +25,46 @@ class API {
         
         let task = session.dataTask(with: request) { data, response, error in
             
-            let parsedResult: [String:AnyObject]!
-            do {
-                parsedResult = try (JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String:AnyObject])
-            } catch {
-                print("Could not parse the data as JSON: '\(data!)'")
-                return
-            }
-            
-            guard let photosDictionary = parsedResult["photos"] as? [String:AnyObject] else {
-                return
-            }
-            
-            guard let photosArray = photosDictionary["photo"] as? [[String: AnyObject]] else {
-                return
-            }
-            
-            for index in 0..<photosArray.count {
-                let photo = Photo(context: DataController.shared.viewContext)
-                let farmID = photosArray[index]["farm"]
-                let serverID = photosArray[index]["server"]
-                let userID = photosArray[index]["id"]
-                let secret = photosArray[index]["secret"]
-                
-                photo.url = "https://farm\(farmID!).staticflickr.com/\(serverID!)/\(userID!)_\(secret!).jpg"
-                photo.pin = pin
-                try? DataController.shared.viewContext.save()
-                
-            }
             var err: String?
             if let statusCode = (response as? HTTPURLResponse)?.statusCode {
                 if statusCode >= 400{
-                    print(statusCode)
-                    err = "Error in posting location"
+                    err = "Error in retrieving photos"
+                } else if statusCode >= 200 && statusCode < 300 {
+                    let parsedResult: [String:AnyObject]!
+                    do {
+                        parsedResult = try (JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String:AnyObject])
+                    } catch {
+                        print("Could not parse the data as JSON: '\(data!)'")
+                        return
+                    }
+                    
+                    guard let photosDictionary = parsedResult["photos"] as? [String:AnyObject] else {
+                        return
+                    }
+                    
+                    guard let photosArray = photosDictionary["photo"] as? [[String: AnyObject]] else {
+                        return
+                    }
+                    
+                    for index in 0..<photosArray.count {
+                        let photo = Photo(context: DataController.shared.viewContext)
+                        let farmID = photosArray[index]["farm"]
+                        let serverID = photosArray[index]["server"]
+                        let userID = photosArray[index]["id"]
+                        let secret = photosArray[index]["secret"]
+                        
+                        photo.url = "https://farm\(farmID!).staticflickr.com/\(serverID!)/\(userID!)_\(secret!).jpg"
+                        photo.pin = pin
+                        try? DataController.shared.viewContext.save()
+                        
+                    }
                 }
-            } else {
+            }  else {
                 err = "Please check your internet connection"
             }
             DispatchQueue.main.async {
                 completion(err)
             }
-            
         }
         task.resume()
     }
